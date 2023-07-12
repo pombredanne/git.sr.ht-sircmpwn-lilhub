@@ -7,10 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"git.sr.ht/~emersion/gqlclient"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"golang.org/x/oauth2"
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
@@ -48,6 +46,12 @@ func main() {
 	}
 
 	e := echo.New()
+	e.Static("/static", "static")
+
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "${remote_ip} ${method} ${path} ${status} ${time_rfc3339} ${error}\n",
+	}))
+	e.Use(middleware.Recover())
 
 	e.Renderer = &Template{
 		templates: template.Must(template.
@@ -56,22 +60,11 @@ func main() {
 			ParseGlob("templates/*.html")),
 	}
 
-	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "${remote_ip} ${method} ${path} ${status} ${time_rfc3339} ${error}\n",
-	}))
-	e.Use(middleware.Recover())
-	e.Static("/static", "static")
-
-	tok := oauth2.StaticTokenSource(&oauth2.Token{
-		AccessToken: os.Getenv("GITHUB_TOKEN"),
-		TokenType:   "bearer",
-	})
+	e.Use(github.Middleware(os.Getenv("GITHUB_TOKEN")))
 
 	e.GET("/:user", func(c echo.Context) error {
 		ctx := c.Request().Context()
-
-		oclient := oauth2.NewClient(ctx, tok)
-		client := gqlclient.New("https://api.github.com/graphql", oclient)
+		client := github.ForContext(c)
 
 		username := c.Param("user")
 		user, _ := github.FetchUserIndex(client, ctx, username)
