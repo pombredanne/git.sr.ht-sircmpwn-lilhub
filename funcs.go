@@ -11,13 +11,19 @@ import (
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark-emoji"
+	"github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/extension"
 
 	"git.sr.ht/~sircmpwn/lilhub/github"
 )
 
 func templateFuncs() template.FuncMap {
-	md := goldmark.New(goldmark.WithExtensions(extension.GFM))
+	md := goldmark.New(goldmark.WithExtensions(
+		extension.GFM,
+		highlighting.NewHighlighting(
+			highlighting.WithStyle("github")),
+		emoji.Emoji))
 
 	return template.FuncMap{
 		"md": func(text string) template.HTML {

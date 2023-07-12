@@ -3,6 +3,7 @@ package view
 import (
 	"fmt"
 	"net/http"
+	"path"
 	"sort"
 	"strings"
 
@@ -72,6 +73,8 @@ type RepoBlobPage struct {
 	Repository *github.Repository
 	Blob       *github.Blob
 	Path       string
+	Name       string
+	Breadcrumb []string
 }
 
 // GET /:owner/:repo/blob/:ref/:path
@@ -82,10 +85,16 @@ func RepoBlob(c echo.Context) error {
 	owner := c.Param("owner")
 	reponame := c.Param("repo")
 	ref := c.Param("ref")
-	path := c.Param("path")
+	filepath := c.Param("path")
 
-	revspec := fmt.Sprintf("%s:%s", ref, path)
+	revspec := fmt.Sprintf("%s:%s", ref, filepath)
 	repo, _ := github.FetchBlob(client, ctx, owner, reponame, revspec)
+
+	dir, name := path.Split(filepath)
+	breadcrumb := strings.Split(dir, "/")
+	if strings.HasSuffix(dir, "/") {
+		breadcrumb = breadcrumb[:len(breadcrumb)-1]
+	}
 
 	return c.Render(http.StatusOK, "repo-blob.html", &RepoBlobPage{
 		Page: NewPage(c, fmt.Sprintf("%s/%s",
@@ -93,7 +102,9 @@ func RepoBlob(c echo.Context) error {
 			repo.Name)),
 		Repository: repo,
 		Blob:       repo.Object.Value.(*github.Blob),
-		Path:       path,
+		Path:       filepath,
+		Name:       name,
+		Breadcrumb: breadcrumb,
 	})
 }
 

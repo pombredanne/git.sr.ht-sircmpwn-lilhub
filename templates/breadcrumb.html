@@ -1,7 +1,7 @@
 
 <div class="container breadcrumb">
 	<strong>
-		<a href="/{{.Owner.Login}}/{{.Name}}">{{.Repository.Name}}</a>
+		<a href="/{{.Repository.Owner.Login}}/{{.Repository.Name}}">{{.Repository.Name}}</a>
 	</strong>
 	/
 	{{range slice .Breadcrumb}}
