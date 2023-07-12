@@ -22,9 +22,7 @@ func UserProfile(c echo.Context) error {
 	// XXX: Errors are ignored, need more general solution
 
 	return c.Render(http.StatusOK, "user.html", &UserPage{
-		Page: Page{
-			Title: user.Login,
-		},
+		Page: NewPage(c, user.Login),
 		User: user,
 	})
 }
