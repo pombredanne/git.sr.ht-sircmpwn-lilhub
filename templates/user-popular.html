@@ -4,7 +4,7 @@
 	{{range .Nodes}}
 	<div class="col-6 well">
 		<h3>
-			<a href="{{.Url}}">{{.Name}}</a>
+			<a href="{{rewriteurl .Url}}">{{.Name}}</a>
 			{{if .IsArchived}}
 			<span class="archived">Archived</span>
 			{{end}}

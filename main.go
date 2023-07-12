@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"html/template"
 	"io"
 	"os"
@@ -9,33 +8,11 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	"github.com/yuin/goldmark"
-	"github.com/yuin/goldmark/extension"
-
 	"git.sr.ht/~sircmpwn/lilhub/github"
 	"git.sr.ht/~sircmpwn/lilhub/view"
 )
 
 func main() {
-	md := goldmark.New(goldmark.WithExtensions(extension.GFM))
-
-	funcs := template.FuncMap{
-		"md": func(text string) template.HTML {
-			var buf bytes.Buffer
-			buf.WriteString(`<div class="markdown">`)
-			err := md.Convert([]byte(text), &buf)
-			if err != nil {
-				return template.HTML(
-					template.HTMLEscapeString(err.Error()))
-			}
-			buf.WriteString(`</div>`)
-			return template.HTML(buf.String())
-		},
-		"html": func(text string) template.HTML {
-			return template.HTML(text)
-		},
-	}
-
 	e := echo.New()
 	e.Static("/static", "static")
 
@@ -47,7 +24,7 @@ func main() {
 	e.Renderer = &Template{
 		templates: template.Must(template.
 			New("templates").
-			Funcs(funcs).
+			Funcs(templateFuncs()).
 			ParseGlob("templates/*.html")),
 	}
 

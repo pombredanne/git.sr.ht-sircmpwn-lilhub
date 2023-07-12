@@ -3,7 +3,7 @@ static/css/main.css: css/main.scss
 	sassc --style compressed $< $@
 
 run: static/css/main.css
-	go run main.go
+	go run .
 
 watch:
 	while inotifywait -e close_write css/main.scss || true; \

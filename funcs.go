@@ -3,9 +3,12 @@ package main
 import (
 	"bytes"
 	"html/template"
+	"net/url"
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
+
+	"git.sr.ht/~sircmpwn/lilhub/github"
 )
 
 func templateFuncs() template.FuncMap {
@@ -23,8 +26,19 @@ func templateFuncs() template.FuncMap {
 			buf.WriteString(`</div>`)
 			return template.HTML(buf.String())
 		},
+
 		"html": func(text string) template.HTML {
 			return template.HTML(text)
+		},
+
+		"rewriteurl": func(u github.URI) string {
+			uri, err := url.Parse(string(u))
+			if err != nil {
+				panic(err)
+			}
+			uri.Scheme = ""
+			uri.Host = ""
+			return uri.String()
 		},
 	}
 }
