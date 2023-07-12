@@ -3,8 +3,8 @@ package view
 import (
 	"fmt"
 	"net/http"
-	"path/filepath"
 	"sort"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 
@@ -125,7 +125,7 @@ func RepoTree(c echo.Context) error {
 		Repository: repo,
 
 		Tree: TreeDetails{
-			Path:       filepath.SplitList(path),
+			Path:       strings.Split(path, "/"),
 			Repository: repo,
 			Tree:       tree,
 			Ref:        ref,
