@@ -14,6 +14,7 @@ type UserPage struct {
 	User *github.User
 }
 
+// GET /:user
 func UserProfile(c echo.Context) error {
 	ctx := c.Request().Context()
 	client := github.ForContext(c)

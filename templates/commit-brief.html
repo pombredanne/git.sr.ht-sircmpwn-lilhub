@@ -1,0 +1,17 @@
+<div class="well well-header commit-brief">
+	<img class="avatar" src="{{.Author.AvatarUrl}}" />
+	<span class="author">
+		{{if .Author.User}}
+		<a href="/{{.Author.User.Login}}">{{.Author.User.Login}}</a>
+		{{else}}
+		{{.Author.Name}}
+		{{end}}
+	</span>
+	<span class="headline">
+		{{html .MessageHeadlineHTML}}
+	</span>
+	<a href="#" class="oid">{{.AbbreviatedOid}}</a>
+	<span class="date">
+		{{date .Author.Date}}
+	</span>
+</div>

@@ -1,0 +1,48 @@
+{{template "head.html" .}}
+<main class="repository repo-index">
+	<header class="container">
+		<h1>
+			<a href="/{{.Repository.Owner.Login}}">{{.Repository.Owner.Login}}</a>
+			/
+			{{.Repository.Name}}
+		</h1>
+	</header>
+
+	<nav class="nav-tabs">
+		<ul>
+			<li class="active">
+				<a href="#">Code</a>
+			</li>
+			<li>
+				<a href="#">Issues</a>
+			</li>
+			<li>
+				<a href="#">Pull requests</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-9">
+				{{template "commit-brief.html" .Repository.Object.Value}}
+				{{template "tree.html" .Repository.Object.Value.Tree}}
+			</div>
+
+			<div class="col-3">
+				<p>
+					{{html .Repository.DescriptionHTML}}
+				</p>
+			</div>
+		</div>
+	</div>
+
+	{{ if .Readme.Object }}
+	<div class="container">
+		<div class="well readme">
+			{{md .Readme.Object.Value.Text}}
+		</div>
+	</div>
+	{{ end }}
+</main>
+{{template "foot.html" .}}

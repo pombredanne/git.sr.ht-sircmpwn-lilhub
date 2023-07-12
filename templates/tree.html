@@ -1,0 +1,12 @@
+<div class="tree well">
+	<ul>
+	{{range .Entries}}
+		<li class="{{.Type}}">
+			<a href="#">
+				{{.Name}}
+				{{- if eq .Type "tree" }}/{{end}}
+			</a>
+		</li>
+	{{end}}
+	</ul>
+</div>
