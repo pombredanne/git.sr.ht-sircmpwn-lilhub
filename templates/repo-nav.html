@@ -1,0 +1,22 @@
+<header class="container">
+	<h1>
+		<a href="/{{.Owner.Login}}">{{.Owner.Login}}</a>
+		/
+		{{.Name}}
+	</h1>
+</header>
+
+<nav class="nav-tabs">
+	<ul>
+		<li class="active">
+			<a href="/{{.Owner.Login}}/{{.Name}}">Code</a>
+		</li>
+		<li>
+			<a href="#">Issues</a>
+		</li>
+		<li>
+			<a href="#">Pull requests</a>
+		</li>
+	</ul>
+</nav>
+

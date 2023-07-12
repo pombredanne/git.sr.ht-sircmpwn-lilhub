@@ -22,6 +22,16 @@ type TreeDetails struct {
 	Tree       *github.Tree
 }
 
+func sortTree(tree *github.Tree) {
+	entries := tree.Entries
+	sort.Slice(entries, func(i, j int) bool {
+		if entries[i].Type != entries[j].Type {
+			return entries[i].Type > entries[j].Type
+		}
+		return entries[i].Name < entries[j].Name
+	})
+}
+
 // GET /:owner/:repo
 func RepoHome(c echo.Context) error {
 	ctx := c.Request().Context()
@@ -34,14 +44,7 @@ func RepoHome(c echo.Context) error {
 
 	// TODO: this probably fails if there is no latest tree or something
 	commit := repo.Object.Value.(*github.Commit)
-	entries := commit.Tree.Entries
-
-	sort.Slice(entries, func(i, j int) bool {
-		if entries[i].Type != entries[j].Type {
-			return entries[i].Type > entries[j].Type
-		}
-		return entries[i].Name < entries[j].Name
-	})
+	sortTree(commit.Tree)
 
 	readme, _ := github.FetchREADME(client, ctx, owner, reponame)
 
@@ -86,5 +89,39 @@ func RepoBlob(c echo.Context) error {
 		Repository: repo,
 		Blob:       repo.Object.Value.(*github.Blob),
 		Path:       path,
+	})
+}
+
+type RepoTreePage struct {
+	Page
+	Repository *github.Repository
+	Tree       TreeDetails
+}
+
+// GET /:owner/:repo/tree/:ref/:path
+func RepoTree(c echo.Context) error {
+	ctx := c.Request().Context()
+	client := github.ForContext(c)
+
+	owner := c.Param("owner")
+	reponame := c.Param("repo")
+	ref := c.Param("ref")
+	path := c.Param("path")
+
+	revspec := fmt.Sprintf("%s:%s", ref, path)
+	repo, _ := github.FetchTree(client, ctx, owner, reponame, revspec)
+	tree := repo.Object.Value.(*github.Tree)
+	sortTree(tree)
+
+	return c.Render(http.StatusOK, "repo-tree.html", &RepoTreePage{
+		Page: NewPage(c, fmt.Sprintf("%s/%s",
+			repo.Owner.Login,
+			repo.Name)),
+		Repository: repo,
+
+		Tree: TreeDetails{
+			Repository: repo,
+			Tree:       tree,
+		},
 	})
 }

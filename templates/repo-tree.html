@@ -1,0 +1,9 @@
+{{template "head.html" .}}
+<main class="repository repo-index">
+	{{template "repo-nav.html" .Repository}}
+
+	<div class="container">
+		{{template "tree.html" .Tree}}
+	</div>
+</main>
+{{template "foot.html" .}}

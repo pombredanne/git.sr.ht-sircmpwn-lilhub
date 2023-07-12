@@ -52,10 +52,6 @@ query FetchRepoIndex($owner: String!, $name: String!) {
     sshUrl
     url
 
-    defaultBranchRef {
-      name
-    }
-
     primaryLanguage {
       color
       name
@@ -113,10 +109,24 @@ query FetchBlob($owner: String!, $name: String!, $ref: String!) {
   }
 }
 
+query FetchTree($owner: String!, $name: String!, $ref: String!) {
+  repository(owner: $owner, name: $name) {
+    ... RepositoryHeader
+
+    object(expression: $ref) {
+      ... TreeObject
+    }
+  }
+}
+
 fragment RepositoryHeader on Repository {
     isArchived
     isDisabled
     name
+
+    defaultBranchRef {
+      name
+    }
 
     owner {
       login
