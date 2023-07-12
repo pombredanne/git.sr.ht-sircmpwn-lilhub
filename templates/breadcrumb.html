@@ -4,8 +4,10 @@
 		<a href="/{{.Repository.Owner.Login}}/{{.Repository.Name}}">{{.Repository.Name}}</a>
 	</strong>
 	/
-	{{range slice .Breadcrumb}}
+	{{range .Breadcrumb}}
+	{{if .}}
 	{{.}} /
+	{{end}}
 	{{end}}
 	{{.Name}}
 </div>
