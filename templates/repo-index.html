@@ -13,6 +13,17 @@
 				<p>
 					{{html .Repository.DescriptionHTML}}
 				</p>
+				<ul class="repo-datapoints">
+					{{ if .Repository.LicenseInfo }}
+					<li title="{{.Repository.LicenseInfo.SpdxId}}">
+						{{ if .Repository.LicenseInfo.Nickname}}
+						{{.Repository.LicenseInfo.Nickname}}
+						{{ else }}
+						{{.Repository.LicenseInfo.Name}}
+						{{ end }}
+					</li>
+					{{ end }}
+				</ul>
 			</div>
 		</div>
 	</div>

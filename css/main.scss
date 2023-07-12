@@ -228,6 +228,12 @@ footer {
 	margin-top: 1rem;
 }
 
+.repo-datapoints {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
 .repo-blob {
 	// XXX: Temporary, may not be required with chroma in non-standalone mode
 	pre {
