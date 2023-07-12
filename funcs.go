@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/alecthomas/chroma/formatters"
+	"github.com/alecthomas/chroma/formatters/html"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
 	"github.com/yuin/goldmark"
@@ -59,7 +59,11 @@ func templateFuncs() template.FuncMap {
 				lex = lexers.Fallback
 			}
 			style := styles.Get("github")
-			formatter := formatters.Get("html")
+			formatter := html.New(
+				// TODO: should not use standalone
+				html.Standalone(true),
+				html.WithLineNumbers(true),
+				html.LinkableLineNumbers(true, "L"))
 			iter, err := lex.Tokenise(nil, text)
 			if err != nil {
 				panic(err)
