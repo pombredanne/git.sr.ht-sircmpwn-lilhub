@@ -1,3 +1,47 @@
 {{template "head.html" .}}
-<h1>{{.User.Login}}</h1>
-<img src="{{.User.AvatarUrl}}" alt="" />
+<main class="user-profile">
+	<header class="container">
+		<h1>{{.User.Login}}</h1>
+	</header>
+	<nav class="nav-tabs">
+		<ul>
+			<li class="active">
+				<a href="#">Overview</a>
+			</li>
+			<li>
+				<a href="#">Repositories</a>
+			</li>
+		</ul>
+	</nav>
+	<section class="container">
+		<div class="row">
+			<div class="col-4 profile-details">
+				<img class="avatar" src="{{.User.AvatarUrl}}" alt="" />
+				<h2>{{.User.Name}}</h2>
+				<h3>{{.User.Login}}</h3>
+				{{if .User.Bio}}
+				<p>{{.User.Bio}}</p>
+				{{end}}
+				<ul>
+					{{if .User.Company}}
+					<li>{{.User.Company}}</li>
+					{{end}}
+					{{if .User.Location}}
+					<li>{{.User.Location}}</li>
+					{{end}}
+					{{if .User.WebsiteUrl}}
+					<li>
+						<a href="{{.User.WebsiteUrl}}">{{.User.WebsiteUrl}}</a>
+					</li>
+					{{end}}
+				</ul>
+			</div>
+			<div class="col-8">
+				{{template "user-readme.html" .User.Repository }}
+				{{template "user-popular.html" .User.Repositories }}
+				{{template "user-pinned.html" .User.PinnedItems }}
+			</div>
+		</div>
+	</section>
+</main>
+{{template "foot.html" .}}

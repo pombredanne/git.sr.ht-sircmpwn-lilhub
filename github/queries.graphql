@@ -6,9 +6,11 @@ query FetchUserIndex($login: String!) {
     location
     login
     name
+    websiteUrl
 
     pinnedItems(first: 6) {
       nodes {
+        __typename
         ... on Repository {
           ... RepositoryBadge
         }
@@ -36,6 +38,7 @@ query FetchUserIndex($login: String!) {
 
     repository(name: $login) {
       object(expression: "HEAD:README.md") {
+        __typename
         ... on Blob {
           text
         }
@@ -46,6 +49,7 @@ query FetchUserIndex($login: String!) {
 
 fragment RepositoryBadge on Repository {
   description
+  descriptionHTML
   isArchived
   name
   url
