@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"html/template"
 	"io"
-	"net/http"
 	"os"
 
 	"github.com/labstack/echo/v4"
@@ -14,16 +13,8 @@ import (
 	"github.com/yuin/goldmark/extension"
 
 	"git.sr.ht/~sircmpwn/lilhub/github"
+	"git.sr.ht/~sircmpwn/lilhub/view"
 )
-
-type Page struct {
-	Title string
-}
-
-type UserPage struct {
-	Page
-	User *github.User
-}
 
 func main() {
 	md := goldmark.New(goldmark.WithExtensions(extension.GFM))
@@ -62,21 +53,7 @@ func main() {
 
 	e.Use(github.Middleware(os.Getenv("GITHUB_TOKEN")))
 
-	e.GET("/:user", func(c echo.Context) error {
-		ctx := c.Request().Context()
-		client := github.ForContext(c)
-
-		username := c.Param("user")
-		user, _ := github.FetchUserIndex(client, ctx, username)
-		// XXX: Errors are ignored, need more general solution
-
-		return c.Render(http.StatusOK, "user.html", &UserPage{
-			Page: Page{
-				Title: user.Login,
-			},
-			User: user,
-		})
-	})
+	e.GET("/:user", view.UserProfile)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
