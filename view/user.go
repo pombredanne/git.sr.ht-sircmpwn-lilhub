@@ -1,6 +1,7 @@
 package view
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -22,7 +23,7 @@ func UserProfile(c echo.Context) error {
 	// XXX: Errors are ignored, need more general solution
 
 	return c.Render(http.StatusOK, "user.html", &UserPage{
-		Page: NewPage(c, user.Login),
+		Page: NewPage(c, fmt.Sprintf("%s (%s)", user.Login, *user.Name)),
 		User: user,
 	})
 }
