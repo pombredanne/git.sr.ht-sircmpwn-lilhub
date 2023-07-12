@@ -1,0 +1,57 @@
+query FetchUserIndex($login: String!) {
+  user(login: $login) {
+    avatarUrl
+    bio
+    company
+    location
+    login
+    name
+
+    pinnedItems(first: 6) {
+      nodes {
+        ... on Repository {
+          ... RepositoryBadge
+        }
+
+        ... on Gist {
+          description
+          name
+          url
+        }
+      }
+    }
+
+    repositories(
+      first: 6,
+      affiliations: [OWNER],
+      orderBy: {
+        field: STARGAZERS,
+        direction: DESC,
+      },
+    ) {
+      nodes {
+        ... RepositoryBadge
+      }
+    }
+
+    repository(name: $login) {
+      object(expression: "HEAD:README.md") {
+        ... on Blob {
+          text
+        }
+      }
+    }
+  }
+}
+
+fragment RepositoryBadge on Repository {
+  description
+  isArchived
+  name
+  url
+
+  primaryLanguage {
+    color
+    name
+  }
+}
