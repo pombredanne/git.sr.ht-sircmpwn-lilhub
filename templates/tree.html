@@ -1,11 +1,25 @@
+{{ $repo := .Repository }}
 <div class="tree well">
 	<ul>
-	{{range .Entries}}
+	{{range .Tree.Entries}}
 		<li class="{{.Type}}">
-			<a href="#">
-				{{.Name}}
-				{{- if eq .Type "tree" }}/{{end}}
+			{{ if eq .Type "tree" }}
+			<a href="/
+				{{- $repo.Owner.Login }}/
+				{{- $repo.Name }}/tree/
+				{{- $repo.DefaultBranchRef.Name }}/
+				{{- .Path}}">
+				{{.Name}}/
 			</a>
+			{{ else }}
+			<a href="/
+				{{- $repo.Owner.Login }}/
+				{{- $repo.Name }}/blob/
+				{{- $repo.DefaultBranchRef.Name }}/
+				{{- .Path}}">
+				{{.Name}}
+			</a>
+			{{ end }}
 		</li>
 	{{end}}
 	</ul>

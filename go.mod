@@ -8,8 +8,10 @@ require (
 	git.sr.ht/~emersion/gqlclient v0.0.0-20230510134714-0c53449cf76c // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20230217124315-7d5c6f04bbb8 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
+	github.com/alecthomas/chroma v0.10.0 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/dave/jennifer v1.6.1 // indirect
+	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-github/v53 v53.2.0 // indirect

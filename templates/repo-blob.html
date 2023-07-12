@@ -1,0 +1,29 @@
+{{template "head.html" .}}
+<main class="repository repo-blob">
+	<header class="container">
+		<h1>
+			<a href="/{{.Repository.Owner.Login}}">{{.Repository.Owner.Login}}</a>
+			/
+			{{.Repository.Name}}
+		</h1>
+	</header>
+
+	<nav class="nav-tabs">
+		<ul>
+			<li class="active">
+				<a href="#">Code</a>
+			</li>
+			<li>
+				<a href="#">Issues</a>
+			</li>
+			<li>
+				<a href="#">Pull requests</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div class="container well">
+		{{hl .Blob.Text .Path}}
+	</div>
+</main>
+{{template "foot.html" .}}

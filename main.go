@@ -19,7 +19,7 @@ func main() {
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${remote_ip} ${method} ${path} ${status} ${time_rfc3339} ${error}\n",
 	}))
-	e.Use(middleware.Recover())
+	//e.Use(middleware.Recover())
 
 	e.Renderer = &Template{
 		templates: template.Must(template.
@@ -31,6 +31,8 @@ func main() {
 	e.Use(github.Middleware(os.Getenv("GITHUB_TOKEN")))
 
 	e.GET("/:user", view.UserProfile)
+	e.GET("/:owner/:repo", view.RepoHome)
+	e.GET("/:owner/:repo/blob/:ref/:path", view.RepoBlob)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

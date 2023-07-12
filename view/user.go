@@ -22,6 +22,9 @@ func UserProfile(c echo.Context) error {
 	username := c.Param("user")
 	user, _ := github.FetchUserIndex(client, ctx, username)
 	// XXX: Errors are ignored, need more general solution
+	if user == nil {
+		return echo.NewHTTPError(http.StatusNotFound, "Not found")
+	}
 
 	return c.Render(http.StatusOK, "user.html", &UserPage{
 		Page: NewPage(c, fmt.Sprintf("%s (%s)", user.Login, *user.Name)),

@@ -38,13 +38,89 @@ query FetchUserIndex($login: String!) {
 
     repository(name: $login) {
       object(expression: "HEAD:README.md") {
-        __typename
-        ... on Blob {
-          text
+        ... TextFileObject
+      }
+    }
+  }
+}
+
+query FetchRepoIndex($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    ... RepositoryHeader
+
+    descriptionHTML
+    sshUrl
+    url
+
+    defaultBranchRef {
+      name
+    }
+
+    primaryLanguage {
+      color
+      name
+    }
+
+    licenseInfo {
+      name
+      nickname
+      spdxId
+    }
+
+    # Latest commit & tree
+    object(expression:"HEAD") {
+      __typename
+      ... on Commit {
+        abbreviatedOid
+        oid
+        messageHeadlineHTML
+
+        author {
+          avatarUrl(size: 24)
+          date
+          name
+
+          user {
+            login
+          }
+        }
+
+        tree {
+          ... TreeObject
         }
       }
     }
   }
+}
+
+# TODO: Merge into FetchRepoIndex
+# https://todo.sr.ht/~emersion/gqlclient/1
+query FetchREADME($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    object(expression:"HEAD:README.md") {
+      ... TextFileObject
+    }
+  }
+}
+
+query FetchBlob($owner: String!, $name: String!, $ref: String!) {
+  repository(owner: $owner, name: $name) {
+    ... RepositoryHeader
+
+    object(expression: $ref) {
+      ... TextFileObject
+    }
+  }
+}
+
+fragment RepositoryHeader on Repository {
+    isArchived
+    isDisabled
+    name
+
+    owner {
+      login
+    }
 }
 
 fragment RepositoryBadge on Repository {
@@ -57,5 +133,24 @@ fragment RepositoryBadge on Repository {
   primaryLanguage {
     color
     name
+  }
+}
+
+fragment TreeObject on GitObject {
+  __typename
+  ... on Tree {
+    entries {
+      mode
+      name
+      path
+      type
+    }
+  }
+}
+
+fragment TextFileObject on GitObject {
+  __typename
+  ... on Blob {
+    text
   }
 }
