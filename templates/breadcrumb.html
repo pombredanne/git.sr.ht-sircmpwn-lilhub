@@ -1,0 +1,11 @@
+
+<div class="container breadcrumb">
+	<strong>
+		<a href="/{{.Owner.Login}}/{{.Name}}">{{.Repository.Name}}</a>
+	</strong>
+	/
+	{{range slice .Breadcrumb}}
+	{{.}} /
+	{{end}}
+	{{.Name}}
+</div>

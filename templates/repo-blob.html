@@ -1,14 +1,7 @@
 {{template "head.html" .}}
 <main class="repository repo-blob">
 	{{template "repo-nav.html" .Repository }}
-
-	<div class="container breadcrumb">
-		<strong><a href="#">scdoc</a></strong>
-		/
-		<a href="#">src</a>
-		/
-		main.c
-	</div>
+	{{template "breadcrumb.html" . }}
 
 	<div class="container well well-header">
 		<ul>
