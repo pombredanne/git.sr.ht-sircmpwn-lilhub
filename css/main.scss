@@ -178,6 +178,53 @@ footer {
 	margin-top: 1rem;
 }
 
-.repo-blob pre {
-	margin-top: 0;
+.repo-blob {
+	// XXX: Temporary, may not be required with chroma in non-standalone mode
+	pre {
+		margin-top: 0;
+	}
+
+	.well-header {
+		display: flex;
+		background: #f6f8fa;
+
+		> *:not(:last-child) {
+			margin-right: 1rem;
+		}
+
+		.file-info {
+			flex-grow: 1;
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		li {
+			display: inline;
+			border: 1px solid $border_color;
+			border-radius: 5px;
+			padding: 0.25rem 0;
+
+			&.active, &:hover {
+				background: white;
+			}
+
+			&.active {
+				font-weight: bold;
+			}
+
+			a {
+				padding: 0 1rem;
+				color: black;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+.breadcrumb {
+	margin-bottom: 1rem;
 }
