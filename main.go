@@ -33,6 +33,7 @@ func main() {
 	e.GET("/:user", view.UserProfile)
 	e.GET("/:owner/:repo", view.RepoHome)
 	e.GET("/:owner/:repo/blob/:ref/:path", view.RepoBlob)
+	e.GET("/:owner/:repo/tree/:ref/", view.RepoTree)
 	e.GET("/:owner/:repo/tree/:ref/:path", view.RepoTree)
 
 	e.Logger.Fatal(e.Start(":1323"))

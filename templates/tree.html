@@ -1,6 +1,11 @@
 {{ $repo := .Repository }}
 <div class="tree well">
 	<ul>
+		{{if .Path}}
+		<li>
+			<a href="/{{$repo.Owner.Login}}/{{$repo.Name}}/tree/{{.Ref}}/{{parent .Path}}">..</a>
+		</li>
+		{{end}}
 	{{range .Tree.Entries}}
 		<li class="{{.Type}}">
 			{{ if eq .Type "tree" }}

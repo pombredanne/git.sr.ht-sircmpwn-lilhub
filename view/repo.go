@@ -3,6 +3,7 @@ package view
 import (
 	"fmt"
 	"net/http"
+	"path/filepath"
 	"sort"
 
 	"github.com/labstack/echo/v4"
@@ -18,8 +19,10 @@ type RepoIndexPage struct {
 }
 
 type TreeDetails struct {
+	Path       []string
 	Repository *github.Repository
 	Tree       *github.Tree
+	Ref        string
 }
 
 func sortTree(tree *github.Tree) {
@@ -56,8 +59,10 @@ func RepoHome(c echo.Context) error {
 		Readme:     readme,
 
 		Tree: TreeDetails{
+			Path:       nil,
 			Repository: repo,
 			Tree:       commit.Tree,
+			Ref:        repo.DefaultBranchRef.Name,
 		},
 	})
 }
@@ -120,8 +125,10 @@ func RepoTree(c echo.Context) error {
 		Repository: repo,
 
 		Tree: TreeDetails{
+			Path:       filepath.SplitList(path),
 			Repository: repo,
 			Tree:       tree,
+			Ref:        ref,
 		},
 	})
 }

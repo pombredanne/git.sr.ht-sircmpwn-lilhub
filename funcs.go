@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"html/template"
 	"net/url"
+	"path/filepath"
 	"time"
 
 	"github.com/alecthomas/chroma/formatters/html"
@@ -75,6 +76,10 @@ func templateFuncs() template.FuncMap {
 				panic(err)
 			}
 			return template.HTML(buf.String())
+		},
+
+		"parent": func(path []string) string {
+			return filepath.Join(path[:len(path)-1]...)
 		},
 	}
 }
