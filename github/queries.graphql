@@ -1,4 +1,4 @@
-query FetchUserIndex($login: String!) {
+query FetchProfile($login: String!) {
   user(login: $login) {
     avatarUrl
     bio
@@ -8,45 +8,72 @@ query FetchUserIndex($login: String!) {
     name
     websiteUrl
 
-    pinnedItems(first: 6) {
-      nodes {
-        __typename
-        ... on Repository {
-          ... RepositoryBadge
-        }
-
-        ... on Gist {
-          description
-          name
-          url
-        }
-      }
-    }
-
-    repositories(
-      first: 6,
-      affiliations: [OWNER],
-      orderBy: {
-        field: STARGAZERS,
-        direction: DESC,
-      },
-    ) {
-      nodes {
-        ... RepositoryBadge
-      }
-    }
-
     repository(name: $login) {
       object(expression: "HEAD:README.md") {
         ... TextFileObject
       }
+    }
+
+    ...PinnedItems
+    ...ProfileRepos
+  }
+
+  organization(login: $login) {
+    avatarUrl
+    description
+    descriptionHTML
+    email
+    name
+    location
+    login
+    websiteUrl
+
+    repository(name: ".github") {
+      object(expression: "HEAD:profile/README.md") {
+        ...TextFileObject
+      }
+    }
+
+    ...PinnedItems
+    ...ProfileRepos
+  }
+}
+
+fragment PinnedItems on ProfileOwner {
+  pinnedItems(first: 6) {
+    nodes {
+      __typename
+      ... on Repository {
+        ...RepositoryBadge
+      }
+
+      ... on Gist {
+        description
+        name
+        url
+      }
+    }
+  }
+}
+
+fragment ProfileRepos on RepositoryOwner {
+  repositories(
+    first: 6,
+    affiliations: [OWNER],
+    orderBy: {
+      field: STARGAZERS,
+      direction: DESC,
+    },
+  ) {
+    nodes {
+      ...RepositoryBadge
     }
   }
 }
 
 query FetchRepoIndex($owner: String!, $name: String!) {
   repository(owner: $owner, name: $name) {
-    ... RepositoryHeader
+    ...RepositoryHeader
 
     descriptionHTML
     sshUrl
@@ -82,7 +109,7 @@ query FetchRepoIndex($owner: String!, $name: String!) {
         }
 
         tree {
-          ... TreeObject
+          ...TreeObject
         }
       }
     }
@@ -94,27 +121,27 @@ query FetchRepoIndex($owner: String!, $name: String!) {
 query FetchREADME($owner: String!, $name: String!) {
   repository(owner: $owner, name: $name) {
     object(expression:"HEAD:README.md") {
-      ... TextFileObject
+      ...TextFileObject
     }
   }
 }
 
 query FetchBlob($owner: String!, $name: String!, $ref: String!) {
   repository(owner: $owner, name: $name) {
-    ... RepositoryHeader
+    ...RepositoryHeader
 
     object(expression: $ref) {
-      ... TextFileObject
+      ...TextFileObject
     }
   }
 }
 
 query FetchTree($owner: String!, $name: String!, $ref: String!) {
   repository(owner: $owner, name: $name) {
-    ... RepositoryHeader
+    ...RepositoryHeader
 
     object(expression: $ref) {
-      ... TreeObject
+      ...TreeObject
     }
   }
 }

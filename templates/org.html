@@ -1,0 +1,44 @@
+{{template "head.html" .}}
+<main class="org-profile">
+	<header class="container">
+		<h1>{{.Org.Login}}</h1>
+	</header>
+	<nav class="nav-tabs">
+		<ul>
+			<li class="active">
+				<a href="#">Overview</a>
+			</li>
+			<li>
+				<a href="#">Repositories</a>
+			</li>
+		</ul>
+	</nav>
+	<section class="container">
+		<div class="row">
+			<div class="col-4 profile-details">
+				<img class="avatar" src="{{.Org.AvatarUrl}}" alt="" />
+				<h2>{{.Org.Name}}</h2>
+				<h3>{{.Org.Login}}</h3>
+				{{if .Org.DescriptionHTML}}
+				{{html .Org.DescriptionHTML}}
+				{{end}}
+				<ul>
+					{{if .Org.Location}}
+					<li>{{.Org.Location}}</li>
+					{{end}}
+					{{if .Org.WebsiteUrl}}
+					<li>
+						<a href="{{.Org.WebsiteUrl}}">{{.Org.WebsiteUrl}}</a>
+					</li>
+					{{end}}
+				</ul>
+			</div>
+			<div class="col-8">
+				{{template "user-readme.html" .Org.Repository }}
+				{{template "user-popular.html" .Org.Repositories }}
+				{{template "user-pinned.html" .Org.PinnedItems }}
+			</div>
+		</div>
+	</section>
+</main>
+{{template "foot.html" .}}

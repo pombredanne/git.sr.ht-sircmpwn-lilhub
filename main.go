@@ -37,7 +37,7 @@ func main() {
 	e.Use(github.Middleware(token))
 
 	e.GET("/", view.Index)
-	e.GET("/:user", view.UserProfile)
+	e.GET("/:login", view.ProfileIndex)
 	e.GET("/:owner/:repo", view.RepoHome)
 	e.GET("/:owner/:repo/blob/:ref/:path", view.RepoBlob)
 	e.GET("/:owner/:repo/tree/:ref/", view.RepoTree)

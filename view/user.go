@@ -14,20 +14,29 @@ type UserPage struct {
 	User *github.User
 }
 
-// GET /:user
-func UserProfile(c echo.Context) error {
+type OrgPage struct {
+	Page
+	Org *github.Organization
+}
+
+// GET /:login
+func ProfileIndex(c echo.Context) error {
 	ctx := c.Request().Context()
 	client := github.ForContext(c)
 
-	username := c.Param("user")
-	user, _ := github.FetchUserIndex(client, ctx, username)
-	// XXX: Errors are ignored, need more general solution
-	if user == nil {
+	login := c.Param("login")
+	user, org, _ := github.FetchProfile(client, ctx, login)
+	if user != nil {
+		return c.Render(http.StatusOK, "user.html", &UserPage{
+			Page: NewPage(c, fmt.Sprintf("%s (%s)", user.Login, *user.Name)),
+			User: user,
+		})
+	} else if org != nil {
+		return c.Render(http.StatusOK, "org.html", &OrgPage{
+			Page: NewPage(c, fmt.Sprintf("%s (%s)", org.Login, *org.Name)),
+			Org:  org,
+		})
+	} else {
 		return echo.NewHTTPError(http.StatusNotFound, "Not found")
 	}
-
-	return c.Render(http.StatusOK, "user.html", &UserPage{
-		Page: NewPage(c, fmt.Sprintf("%s (%s)", user.Login, *user.Name)),
-		User: user,
-	})
 }
