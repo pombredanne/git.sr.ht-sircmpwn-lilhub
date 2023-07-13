@@ -1,0 +1,15 @@
+{{template "head.html" .}}
+<main class="repository repo-commit">
+	{{template "repo-nav.html" .Repository }}
+
+	<div class="container">
+		{{template "commit.html" .Commit}}
+	</div>
+
+	<div class="container">
+		<div class="well" style="margin-top: 1rem">
+			{{hl .Diff "commit.diff"}}
+		</div>
+	</div>
+</main>
+{{template "foot.html" .}}

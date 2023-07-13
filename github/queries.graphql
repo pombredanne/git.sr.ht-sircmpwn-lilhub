@@ -117,6 +117,36 @@ query FetchRepoIndex($owner: String!, $name: String!) {
   }
 }
 
+query FetchCommit($owner: String!, $name: String!, $ref: String!) {
+  repository(owner: $owner, name: $name) {
+    ...RepositoryHeader
+
+    object(expression: $ref) {
+      __typename
+      ... on Commit {
+        additions
+        deletions
+        oid
+        abbreviatedOid
+
+        messageBodyHTML
+        messageHeadline
+        messageHeadlineHTML
+
+        author {
+          avatarUrl(size: 24)
+          date
+          name
+
+          user {
+            login
+          }
+        }
+      }
+    }
+  }
+}
+
 # TODO: Merge into FetchRepoIndex
 # https://todo.sr.ht/~emersion/gqlclient/1
 query FetchREADME($owner: String!, $name: String!) {

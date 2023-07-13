@@ -2,10 +2,12 @@ package view
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"path"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/dustin/go-humanize"
 	"github.com/labstack/echo/v4"
@@ -148,5 +150,53 @@ func RepoTree(c echo.Context) error {
 			Tree:       tree,
 			Ref:        ref,
 		},
+	})
+}
+
+type CommitPage struct {
+	Page
+	Repository *github.Repository
+	Commit     *github.Commit
+	Diff       string
+}
+
+// GET /:owner/:repo/commit/:ref
+func RepoCommit(c echo.Context) error {
+	ctx := c.Request().Context()
+	client := github.ForContext(c)
+
+	owner := c.Param("owner")
+	reponame := c.Param("repo")
+	ref := c.Param("ref")
+
+	repo, _ := github.FetchCommit(client, ctx, owner, reponame, ref)
+	if repo == nil || repo.Object == nil {
+		return echo.NewHTTPError(http.StatusNotFound, "Not found")
+	}
+	commit := repo.Object.Value.(*github.Commit)
+
+	hclient := &http.Client{
+		Timeout: 3 * time.Second,
+	}
+	diffUrl := fmt.Sprintf("https://github.com/%s/%s/commit/%s.diff",
+		owner, reponame, ref)
+	resp, err := hclient.Get(diffUrl)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	diffbytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	diff := string(diffbytes)
+
+	return c.Render(http.StatusOK, "repo-commit.html", &CommitPage{
+		Page: NewPage(c, fmt.Sprintf("%s/%s",
+			repo.Owner.Login,
+			repo.Name)),
+		Repository: repo,
+		Commit:     commit,
+		Diff:       diff,
 	})
 }
