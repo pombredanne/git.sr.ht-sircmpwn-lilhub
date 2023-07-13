@@ -80,3 +80,16 @@
 	margin: 0;
 	padding: 0;
 }
+
+.repo-sidebar h3 {
+	border-bottom: 1px solid $border_color;
+	margin-bottom: 0;
+}
+
+.repo-sidebar dt {
+	font-weight: bold;
+}
+
+.repo-sidebar dd {
+	margin-left: 0;
+}
