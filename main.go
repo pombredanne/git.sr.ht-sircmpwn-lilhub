@@ -3,6 +3,7 @@ package main
 import (
 	"html/template"
 	"io"
+	"log"
 	"os"
 
 	"github.com/labstack/echo/v4"
@@ -28,7 +29,12 @@ func main() {
 			ParseGlob("templates/*.html")),
 	}
 
-	e.Use(github.Middleware(os.Getenv("GITHUB_TOKEN")))
+	token := os.Getenv("GITHUB_TOKEN")
+	if token == "" {
+		log.Fatal("Expected GITHUB_TOKEN to be set in environment")
+	}
+
+	e.Use(github.Middleware(token))
 
 	e.GET("/", view.Index)
 	e.GET("/:user", view.UserProfile)
