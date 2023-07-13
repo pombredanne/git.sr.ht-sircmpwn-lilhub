@@ -99,7 +99,7 @@ func RepoBlob(c echo.Context) error {
 		breadcrumb = breadcrumb[:len(breadcrumb)-1]
 	}
 
-	size := humanize.Bytes(uint64(repo.Object.Value.(*github.Blob).ByteSize))
+	size := humanize.IBytes(uint64(repo.Object.Value.(*github.Blob).ByteSize))
 
 	return c.Render(http.StatusOK, "repo-blob.html", &RepoBlobPage{
 		Page: NewPage(c, fmt.Sprintf("%s/%s",
