@@ -1,0 +1,19 @@
+.well {
+	border: 1px solid #d0d7de;
+	border-radius: 5px;
+	padding: 1rem;
+
+	& > :first-child {
+		margin-top: 0 !important;
+	}
+}
+
+.well-header {
+	background: #f6f8fa;
+	border-radius: 6px 6px 0 0;
+	border-bottom: none;
+
+	& + .well {
+		border-radius: 0 0 6px 6px;
+	}
+}

@@ -1,0 +1,82 @@
+.banner {
+	background: #fff8c5;
+	text-align: center;
+	margin-top: -1rem;
+	margin-bottom: 1rem;
+}
+
+.well.archived {
+	font-size: 0.75em;
+	float: right;
+	border: 1px solid $accent_color;
+	border-radius: 3px;
+	padding: 0 5px;
+}
+
+.language .color {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-radius: 6px;
+	border: 1px solid rgba(31,35,40,0.1);
+}
+
+.commit-brief {
+	display: grid;
+	grid-template-columns: auto auto 1fr auto auto;
+	grid-gap: 0.5rem;
+
+	img {
+		width: 24px;
+		height: 24px;
+		border-radius: 12px;
+		border: 1px solid gray;
+	}
+
+	.author {
+		font-weight: bold;
+	}
+
+	.headline {
+		white-space: nowrap;
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
+.tree {
+	padding: 0;
+
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		&:not(:last-child) {
+			border-bottom: 1px solid $border_color;
+		}
+
+		&:hover {
+			background: #f6f8fa;
+		}
+	}
+
+	a {
+		display: block;
+		padding: 0.25rem 1rem;
+		color: $black;
+		text-decoration: none;
+	}
+}
+
+.repo-index .readme {
+	margin-top: 1rem;
+}
+
+.repo-datapoints {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}

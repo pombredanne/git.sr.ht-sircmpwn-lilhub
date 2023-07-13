@@ -1,0 +1,55 @@
+.markdown {
+	& > :first-child {
+		margin-top: 0 !important;
+	}
+
+	h1 {
+		padding-bottom: .3em;
+		font-size: 2em;
+		border-bottom: 1px solid hsla(210,18%,87%,1);
+	}
+
+	img {
+		max-width: 100%;
+	}
+
+	pre {
+		background: #f6f8fa !important;
+		border-radius: 3px;
+		padding: 1rem;
+	}
+
+	:not(pre) code {
+		padding: .2em .4em;
+		font-size: 85%;
+		white-space: break-spaces;
+		background-color: rgba(175,184,193,0.2);
+		border-radius: 6px;
+	}
+
+	blockquote {
+		padding: 0 1em;
+		color: #656d76;
+		border-left: 0.25em solid $border_color;
+		margin-left: 0;
+	}
+
+	table {
+		display: block;
+		width: max-content;
+		max-width: 100%;
+		overflow: auto;
+		border-spacing: 0;
+		border-collapse: collapse;
+	}
+
+	tr {
+		background-color: #ffffff;
+		border-top: 1px solid $border_color;
+	}
+
+	th, td {
+		padding: 6px 13px;
+		border: 1px solid $border_color;
+	}
+}

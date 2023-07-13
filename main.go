@@ -30,6 +30,7 @@ func main() {
 
 	e.Use(github.Middleware(os.Getenv("GITHUB_TOKEN")))
 
+	e.GET("/", view.Index)
 	e.GET("/:user", view.UserProfile)
 	e.GET("/:owner/:repo", view.RepoHome)
 	e.GET("/:owner/:repo/blob/:ref/:path", view.RepoBlob)

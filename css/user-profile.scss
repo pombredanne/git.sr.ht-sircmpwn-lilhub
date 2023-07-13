@@ -1,0 +1,14 @@
+.user-profile {
+	.avatar {
+		display: block;
+		margin: 0 auto;
+		max-width: 260px;
+		border-radius: calc(260px / 2);
+		border: 2px solid gray;
+	}
+
+	.profile-details ul {
+		margin: 0;
+		padding: 0;
+	}
+}

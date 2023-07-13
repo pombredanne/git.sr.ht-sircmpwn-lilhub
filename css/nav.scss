@@ -1,0 +1,29 @@
+.nav-tabs {
+	border-bottom: 2px solid $border_color;
+	margin-bottom: 1rem;
+
+	ul {
+		max-width: $base_width;
+		margin: 0 auto;
+		padding: 0;
+	}
+
+	li {
+		display: inline;
+		list-style: none;
+		padding: 0 1rem;
+
+		&:not(:first-child) {
+			margin-left: 0.5rem;
+		}
+
+		&.active, &:hover {
+			border-bottom: 2px solid $accent_color;
+		}
+	}
+
+	a {
+		color: $black;
+		text-decoration: none;
+	}
+}
