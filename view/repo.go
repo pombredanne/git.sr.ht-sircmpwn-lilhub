@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/dustin/go-humanize"
 	"github.com/labstack/echo/v4"
 
 	"git.sr.ht/~sircmpwn/lilhub/github"
@@ -72,8 +73,10 @@ type RepoBlobPage struct {
 	Page
 	Repository *github.Repository
 	Blob       *github.Blob
+	Ref        string
 	Path       string
 	Name       string
+	Size       string
 	Breadcrumb []string
 }
 
@@ -96,14 +99,18 @@ func RepoBlob(c echo.Context) error {
 		breadcrumb = breadcrumb[:len(breadcrumb)-1]
 	}
 
+	size := humanize.Bytes(uint64(repo.Object.Value.(*github.Blob).ByteSize))
+
 	return c.Render(http.StatusOK, "repo-blob.html", &RepoBlobPage{
 		Page: NewPage(c, fmt.Sprintf("%s/%s",
 			repo.Owner.Login,
 			repo.Name)),
 		Repository: repo,
 		Blob:       repo.Object.Value.(*github.Blob),
+		Ref:        ref,
 		Path:       filepath,
 		Name:       name,
+		Size:       size,
 		Breadcrumb: breadcrumb,
 	})
 }

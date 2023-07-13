@@ -13,6 +13,7 @@ require (
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/dave/jennifer v1.6.1 // indirect
 	github.com/dlclark/regexp2 v1.7.0 // indirect
+	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-github/v53 v53.2.0 // indirect

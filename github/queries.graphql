@@ -10,7 +10,7 @@ query FetchProfile($login: String!) {
 
     repository(name: $login) {
       object(expression: "HEAD:README.md") {
-        ... TextFileObject
+        ...BlobObject
       }
     }
 
@@ -30,7 +30,7 @@ query FetchProfile($login: String!) {
 
     repository(name: ".github") {
       object(expression: "HEAD:profile/README.md") {
-        ...TextFileObject
+        ...BlobObject
       }
     }
 
@@ -122,7 +122,7 @@ query FetchRepoIndex($owner: String!, $name: String!) {
 query FetchREADME($owner: String!, $name: String!) {
   repository(owner: $owner, name: $name) {
     object(expression:"HEAD:README.md") {
-      ...TextFileObject
+      ...BlobObject
     }
   }
 }
@@ -132,7 +132,7 @@ query FetchBlob($owner: String!, $name: String!, $ref: String!) {
     ...RepositoryHeader
 
     object(expression: $ref) {
-      ...TextFileObject
+      ...BlobObject
     }
   }
 }
@@ -186,9 +186,11 @@ fragment TreeObject on GitObject {
   }
 }
 
-fragment TextFileObject on GitObject {
+fragment BlobObject on GitObject {
   __typename
   ... on Blob {
+    byteSize
+    isBinary
     text
   }
 }

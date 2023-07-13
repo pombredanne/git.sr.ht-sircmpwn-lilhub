@@ -8,12 +8,11 @@
 			<li class="active"><a>Code</a></li>
 			<li><a href="#">Blame</a></li>
 		</ul>
-		<span class="file-info">
-			123 KiB
-		</span>
+		<span class="file-info">{{.Size}}</span>
 		<ul>
-			<li><a href="#">View raw</a></li>
-			<li><a href="#">Download</a></li>
+			<li><a
+			    href="https://github.com/{{.Repository.Owner.Login}}/{{.Repository.Name}}/raw/{{.Ref}}/{{.Path}}"
+			>View raw</a></li>
 		</ul>
 	</div>
 
