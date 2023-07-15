@@ -17,7 +17,9 @@
 		<div class="row">
 			<div class="col-4 profile-details">
 				<img class="avatar" src="{{.User.AvatarUrl}}" alt="" />
+				{{if .User.Name}}
 				<h2>{{.User.Name}}</h2>
+				{{end}}
 				<h3>{{.User.Login}}</h3>
 				{{if .User.Bio}}
 				<p>{{.User.Bio}}</p>

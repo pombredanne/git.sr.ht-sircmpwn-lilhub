@@ -27,13 +27,21 @@ func ProfileIndex(c echo.Context) error {
 	login := c.Param("login")
 	user, org, _ := github.FetchProfile(client, ctx, login)
 	if user != nil {
+		title := user.Login
+		if user.Name != nil {
+			title = fmt.Sprintf("%s (%s)", user.Login, *user.Name)
+		}
 		return c.Render(http.StatusOK, "user.html", &UserPage{
-			Page: NewPage(c, fmt.Sprintf("%s (%s)", user.Login, *user.Name)),
+			Page: NewPage(c, title),
 			User: user,
 		})
 	} else if org != nil {
+		title := org.Login
+		if org.Name != nil {
+			title = fmt.Sprintf("%s (%s)", org.Login, *org.Name)
+		}
 		return c.Render(http.StatusOK, "org.html", &OrgPage{
-			Page: NewPage(c, fmt.Sprintf("%s (%s)", org.Login, *org.Name)),
+			Page: NewPage(c, title),
 			Org:  org,
 		})
 	} else {
