@@ -9,7 +9,9 @@
 			<span class="archived">Archived</span>
 			{{end}}
 		</h3>
+		{{if .Description}}
 		<p>{{.Description}}</p>
+		{{end}}
 		<div class="language">
 			<span class="color" style="background: {{.PrimaryLanguage.Color}}"></span>
 			{{.PrimaryLanguage.Name}}
